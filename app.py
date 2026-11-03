@@ -138,8 +138,12 @@ elif menu == "Face Swap Studio":
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
             out = cv2.VideoWriter(out_path, fourcc, fps, (width, height))
 
-            # Haar cascade for face detection
-            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+            # Haar cascade fallback creation or direct center swap
+            cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+            if os.path.exists(cascade_path):
+                face_cascade = cv2.CascadeClassifier(cascade_path)
+            else:
+                face_cascade = None
 
             frame_idx = 0
             while cap.isOpened():
@@ -153,9 +157,12 @@ elif menu == "Face Swap Studio":
                 status_text.text(f"🔄 Neural Face Swapping Frame {frame_idx}/{total_frames}...")
 
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+                if face_cascade is not None:
+                    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+                else:
+                    faces = []
 
-                # If no face detected by cascade, apply face swap to center of video as guaranteed fallback
+                # If no face detected or cascade is unavailable, apply face swap to center of video as guaranteed fallback
                 if len(faces) == 0:
                     fh, fw = int(height * 0.4), int(width * 0.3)
                     fx, fy = (width - fw) // 2, (height - fh) // 2
