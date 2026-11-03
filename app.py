@@ -3,6 +3,9 @@ import os
 import time
 import numpy as np
 from PIL import Image
+import cv2
+import tempfile
+
 
 st.set_page_config(
     page_title="AI Face Swap Video Editor Studio",
@@ -178,6 +181,20 @@ elif menu == "Face Swap Studio":
             progress_bar.progress(100)
             status_text.text("✨ AI Face Swap Processing Completed Successfully!")
             st.success("🎉 OpenCV Neural Face Swap Completed on All Video Frames!")
+    if st.session_state.output_video_path and os.path.exists(st.session_state.output_video_path):
+        st.markdown("### 📺 Final Face-Swapped Video Result")
+        st.video(st.session_state.output_video_path)
+
+        with open(st.session_state.output_video_path, "rb") as f:
+            video_bytes = f.read()
+
+        st.download_button(
+            label="⬇️ Download Face-Swapped Video (MP4)",
+            data=video_bytes,
+            file_name="opencv_face_swapped.mp4",
+            mime="video/mp4",
+            use_container_width=True
+        )
 
         if "output_video_path" in st.session_state and st.session_state.output_video_path and os.path.exists(st.session_state.output_video_path):
             st.markdown("### 📺 Final Face-Swapped Video Result")
