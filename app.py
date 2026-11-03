@@ -208,22 +208,7 @@ elif menu == "Face Swap Studio":
         )
 
 
-            
-            st.success("🎉 AI Face Swap & Neural Blending Completed Successfully!")
-            st.markdown("### 📺 Final Output Result (Face Swapped)")
-            st.info("The face from your uploaded portrait photo has been successfully mapped and blended into the target video frames with matched lighting and expressions.")
-            
-            st.video(st.session_state.uploaded_video)
 
-            col_dl1, col_dl2 = st.columns(2)
-            with col_dl1:
-                st.download_button(
-                    label="⬇️ Download Face-Swapped Video (MP4)",
-                    data=b"mock-face-swapped-video-bytes",
-                    file_name="ai_face_swapped_output.mp4",
-                    mime="video/mp4",
-                    use_container_width=True
-                )
             with col_dl2:
                 if st.button("📂 Save to My Projects", use_container_width=True):
                     st.success("Project saved successfully! View it in 'My Projects' or 'Exported Videos'.")
