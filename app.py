@@ -203,35 +203,11 @@ elif menu == "Face Swap Studio":
             data=video_bytes,
             file_name="opencv_face_swapped.mp4",
             mime="video/mp4",
+            key="download_face_swapped_btn",
             use_container_width=True
         )
 
-        if "output_video_path" in st.session_state and st.session_state.output_video_path and os.path.exists(st.session_state.output_video_path):
-            st.markdown("### 📺 Final Face-Swapped Video Result")
-            st.video(st.session_state.output_video_path)
 
-            with open(st.session_state.output_video_path, "rb") as f:
-                video_bytes = f.read()
-
-            st.download_button(
-                label="⬇️ Download Face-Swapped Video (MP4)",
-                data=video_bytes,
-                file_name="opencv_face_swapped.mp4",
-                mime="video/mp4",
-                use_container_width=True
-            )
-        else:
-            progress_bar = st.progress(0)
-            status_text = st.empty()
-            for i in range(101):
-                time.sleep(0.03)
-                progress_bar.progress(i)
-                if i < 35:
-                    status_text.text(f"🔍 Step 1/3: Detecting facial landmarks & eye alignment... {i}%")
-                elif i < 75:
-                    status_text.text(f"🎭 Step 2/3: Applying neural face replacement & expression matching... {i}%")
-                else:
-                    status_text.text(f"💡 Step 3/3: Harmonizing skin tones, shadows & lighting... {i}%")
             
             st.success("🎉 AI Face Swap & Neural Blending Completed Successfully!")
             st.markdown("### 📺 Final Output Result (Face Swapped)")
