@@ -50,6 +50,9 @@ if "uploaded_face" not in st.session_state:
 
 if "uploaded_video" not in st.session_state:
     st.session_state.uploaded_video = None
+if "output_video_path" not in st.session_state:
+    st.session_state.output_video_path = None
+
 
 st.sidebar.markdown("## 🎬 AI Face Swap Studio")
 st.sidebar.markdown("---")
@@ -181,7 +184,7 @@ elif menu == "Face Swap Studio":
             progress_bar.progress(100)
             status_text.text("✨ AI Face Swap Processing Completed Successfully!")
             st.success("🎉 OpenCV Neural Face Swap Completed on All Video Frames!")
-    if st.session_state.output_video_path and os.path.exists(st.session_state.output_video_path):
+    if st.session_state.get("output_video_path") and os.path.exists(st.session_state.output_video_path):
         st.markdown("### 📺 Final Face-Swapped Video Result")
         st.video(st.session_state.output_video_path)
 
