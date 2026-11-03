@@ -91,8 +91,9 @@ elif menu == "Face Swap Studio":
         st.markdown("### 2. Source Video")
         video_file = st.file_uploader("Upload video", type=["mp4", "mov", "avi"], key="video_up")
         if video_file is not None:
-            st.session_state.uploaded_video = video_file.name
+            st.session_state.uploaded_video = video_file
             st.success(f"Video loaded: {video_file.name}")
+            st.video(video_file)
 
     if st.button("🚀 Start AI Face Swap Processing", use_container_width=True):
         progress_bar = st.progress(0)
@@ -101,7 +102,28 @@ elif menu == "Face Swap Studio":
             time.sleep(0.02)
             progress_bar.progress(i)
             status_text.text(f"Processing AI Face Swap... {i}%")
+        
         st.success("🎉 Face Swap Processing Completed Successfully!")
+        st.markdown("### 📺 Final Output Result")
+        st.info("Here is your face-swapped video result ready for preview and download:")
+        
+        if st.session_state.uploaded_video is not None:
+            st.video(st.session_state.uploaded_video)
+        else:
+            st.video("https://www.w3schools.com/html/mov_bbb.mp4")
+
+        col_dl1, col_dl2 = st.columns(2)
+        with col_dl1:
+            st.download_button(
+                label="⬇️ Download Face-Swapped Video (MP4)",
+                data=b"mock-video-binary-data",
+                file_name="face_swapped_output.mp4",
+                mime="video/mp4",
+                use_container_width=True
+            )
+        with col_dl2:
+            if st.button("📂 Save to My Projects", use_container_width=True):
+                st.success("Project saved successfully! View it in 'My Projects' or 'Exported Videos'.")
 
 elif menu == "Video Editor":
     st.title("✂️ Advanced Video Editor & Timeline")
